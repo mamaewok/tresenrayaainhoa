@@ -1,4 +1,4 @@
-package practica15b;
+package tresEnRaya;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 
-public class TresEnRaya extends JFrame implements ActionListener, ItemListener {
+public class Vista extends JFrame implements ActionListener, ItemListener {
 
 	private static final long serialVersionUID = 1L;
 	// Atributos
@@ -28,7 +28,7 @@ public class TresEnRaya extends JFrame implements ActionListener, ItemListener {
 	private JRadioButton humanoVsOrdenador = null;
 	private JRadioButton humanoVsHumano = null;
 
-	public TresEnRaya() {
+	public Vista() {
 		this.setTitle("Tres en raya");
 		this.setBackground(Color.lightGray);
 		this.setSize(400, 250);

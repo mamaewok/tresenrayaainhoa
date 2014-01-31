@@ -1,4 +1,4 @@
-package practica15b;
+package tresEnRaya;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;

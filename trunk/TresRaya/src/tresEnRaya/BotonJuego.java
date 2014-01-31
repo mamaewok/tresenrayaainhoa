@@ -1,4 +1,4 @@
-package practica15b;
+package tresEnRaya;
 
 import javax.swing.JButton;
 /**
