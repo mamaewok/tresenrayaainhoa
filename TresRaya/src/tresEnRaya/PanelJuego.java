@@ -10,11 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * 
- * @author Ainhoa Suárez Sánchez
- * 
- *         Crea el panel con los botones y añade la funcionalidad básica de
- *         juego
+ * Crea el panel con los botones y añade la funcionalidad básica dejuego
+ * @author MAMAEWOK
+ *
  */
 public class PanelJuego extends JPanel implements ActionListener {
 
@@ -26,21 +24,26 @@ public class PanelJuego extends JPanel implements ActionListener {
 	public static final ImageIcon JUGADOR2_ICON = new ImageIcon("circulo.jpg");
 
 	// Declaro mis atributos
-	private BotonJuego[][] panelJuego; // matriz que rellenaremos con las teclas
-										// de tipo BotonJuego
-	private JLabel mensaje;
-	private int movimientos; // acumula mov. y cuando llega a 9 sabe que el
-								// juego ha terminado
-	private boolean turno; // true=turno1; false=turno2
-	private boolean bloqueado;
-
-	private ArrayList<BotonJuego> posibilidades;
-	private boolean tipoJuego;
+	
+	// matriz que rellenaremos con las teclas de tipo BotonJuego
+	private BotonJuego[][] panelJuego;
+	//mensaje que cambiaremos según gane un jugador u otro, o se produzca un empate
+	private JLabel mensaje; 
+	// acumula mov. y cuando llega a 9 sabe que el juego ha terminado
+	private int movimientos; 
+	// true=turno1; false=turno2
+	private boolean turno; 
+	//Sirve para decir si esta el panel de juego bloqueado
+	private boolean bloqueado; 
+	//guarda todos los botones de mi tablero y los borra según se usan
+	private ArrayList<BotonJuego> posibilidades; 
+	//dice el tipo de juego en el que nos encontramos
+	private boolean tipoJuego; 
 
 	/**
 	 * Crea el panel de juego e inicializa los atributos
 	 * 
-	 * @param mensaje
+	 * @param mensaje emnsaje que irá cambiando según las circunstancias
 	 */
 	public PanelJuego(JLabel mensaje) {
 		panelJuego = new BotonJuego[3][3];
@@ -95,12 +98,25 @@ public class PanelJuego extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Reinicia el tablero vaciando las posibilidades que quedaran, rellenandolas de nuevo con los botones sin tocar, reiniciando los movimientos
+	 * y bloqueando las teclas hasta que se acepte un nuevo tipo de juego
+	 */
 	public void reiniciar() {
-		bloqueado = false;
+		posibilidades.removeAll(posibilidades);
+		//El error se encontraba en que vaciaba las posibilidades pero no volvia a llenarlas con los posibles botones. Así ya funciona!! :D:D
+		for (int x = 0; x < panelJuego.length; x++) {  
+			for (int y = 0; y < panelJuego[x].length; y++) {
+				posibilidades.add(panelJuego[x][y]);
+			}
+		}
 		movimientos = 0;
 		bloquear();
 	}
 
+	/**
+	 * Desbloquea el tablero de juego 
+	 */
 	public void desbloquear() {
 		for (int x = 0; x < panelJuego.length; x++) {
 			for (int y = 0; y < panelJuego[x].length; y++) {
@@ -111,6 +127,9 @@ public class PanelJuego extends JPanel implements ActionListener {
 		bloqueado = false;
 	}
 
+	/**
+	 * Bloquea el tablero de juego 
+	 */
 	private void bloquear() {
 		for (int x = 0; x < panelJuego.length; x++) {
 			for (int y = 0; y < panelJuego[x].length; y++) {
@@ -121,13 +140,20 @@ public class PanelJuego extends JPanel implements ActionListener {
 		bloqueado = true;
 	}
 
+	/**
+	 * Calcula el movimiento que realizará el ordenador de manera aleatoria
+	 * @return un boton elegido de manera aleatoria entre las posibilidades que queden todavia
+	 */
 	private BotonJuego calcularMovimiento() {
-		if(posibilidades.isEmpty())
-			System.out.println("Esta vacio");
 		int mov = (int) Math.random() * (posibilidades.size());
 		return (BotonJuego) posibilidades.get(mov);
 	}
 
+	/**
+	 * Comprueba la matriz si gana o no el boton introducido como parámetro
+	 * @param botonJuego
+	 * @return true si el boton gana o false si pierde
+	 */
 	private boolean comprobarGanador(BotonJuego botonJuego) {
 		int y = botonJuego.getCoordenadaY();
 		int x = botonJuego.getCoordenadaX();
@@ -247,34 +273,32 @@ public class PanelJuego extends JPanel implements ActionListener {
 		return false;
 	}
 
+	/**
+	 * Gestiona el evento de pulsado de los botones del tablero de juego
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		BotonJuego botonJuego = (BotonJuego) ev.getSource();
-		if (botonJuego.getText().equals("")) {
-			ponerSimbolo(botonJuego);
-			
+		if (botonJuego.getText().equals("")) {  
+			ponerSimbolo(botonJuego);					//Si el boton esta vacio pon el simbolo correspondiente y suma el movimiento
 			movimientos++;
-			if (comprobarGanador(botonJuego)) {
-				mensaje.setText("GANADOR: " + botonJuego.getText());
-				bloquear();
+			if (comprobarGanador(botonJuego) == true) {
+				mensaje.setText("GANADOR: " + botonJuego.getText());		//Si ese boton gana dilo y reinicia
 				reiniciar();
-			} else if (movimientos == 9) {
+			} else if (movimientos == 9) {									//Si los mov = 9 hay empate y reinicia
 				mensaje.setText("EMPATE");
-				bloquear();
 				reiniciar();
 			}
-			if (tipoJuego && !bloqueado) {
-				movimientos++;
-				posibilidades.remove(botonJuego);
-				botonJuego = calcularMovimiento();
+			if (tipoJuego == true && !bloqueado) {							//Si se juega HvsO quito la posibilidad del boton pulsado por el H y lo convierto
+				posibilidades.remove(botonJuego);							//en boton pulsado por el Ordenador y borro la posilidad el botón del ordenador, pone el simbolo
+				botonJuego = calcularMovimiento();							//y suma movimiento
 				posibilidades.remove(botonJuego);
 				ponerSimbolo(botonJuego);
-				if (comprobarGanador(botonJuego)) {
+				movimientos++;
+				if (comprobarGanador(botonJuego) == true) {								//Comprueba ganador o empate HvsO
 					mensaje.setText("GANADOR: " + botonJuego.getText());
-					bloquear();
 					reiniciar();
 				} else if (movimientos == 9) {
 					mensaje.setText("Final de juego. Tablas.");
-					bloquear();
 					reiniciar();
 				}
 			}
