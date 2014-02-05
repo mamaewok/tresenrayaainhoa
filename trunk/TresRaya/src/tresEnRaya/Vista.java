@@ -28,13 +28,16 @@ public class Vista extends JFrame implements ActionListener, ItemListener {
 	private JRadioButton humanoVsOrdenador = null;
 	private JRadioButton humanoVsHumano = null;
 
+	/**
+	 * Crea todo la vista de nuestro juego al instanciarse
+	 */
 	public Vista() {
 		this.setTitle("Tres en raya");
 		this.setBackground(Color.lightGray);
 		this.setSize(400, 250);
 		this.setResizable(false);
 		this.getContentPane().setLayout(new BorderLayout());
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); //importante para que la ventana de confirmación al cerrar actue adecuadamente
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent ev) { // Para tener que aceptar al cerrar
 				cerrar();
@@ -46,7 +49,7 @@ public class Vista extends JFrame implements ActionListener, ItemListener {
 		mensaje = new JLabel();
 		mensaje.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		tablero = new PanelJuego(mensaje);
+		tablero = new PanelJuego(mensaje); //se instancia el tablero en su lugar correspondiente con su mensaje cambiante
 		this.getContentPane().add(tablero, BorderLayout.CENTER);
 		panel1.add(mensaje);
 		JPanel panel1Aux = new JPanel();
@@ -78,38 +81,55 @@ public class Vista extends JFrame implements ActionListener, ItemListener {
 		this.setVisible(true);
 	}
 
+	/**
+	 * Ofrece la vista de una ventana de confirmación antes de cerrar el programa
+	 */
 	public void cerrar() {
 		Object[] opciones = { "Aceptar", "Cancelar" };
 
 		int eleccion = JOptionPane.showOptionDialog(null,
-				"En realidad desea realizar cerrar la aplicacion",
+				"¿Seguro que quiere salir de este juego tan chulo?",
 				"Mensaje de Confirmacion", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, opciones, "Aceptar");
 		if (eleccion == JOptionPane.YES_OPTION) {
 			System.exit(0);
-		} else {
-
-		}
+		} 
 	}
 	
+	/**
+	 * Deshabilita los botones de tipo de juego
+	 */
 	public void bloquearTipoJuego(){
 		humanoVsHumano.setVisible(false);
 		humanoVsOrdenador.setVisible(false);
 	}
 	
+	/**
+	 * Habilita los botones de tipo de juego
+	 */
 	public void desbloquearTipoJuego(){
 		humanoVsHumano.setVisible(true);
 		humanoVsOrdenador.setVisible(true);
 	}
 	
+	/**
+	 * Deshabilita el botón Aceptar
+	 */
 	public void desbloquearAceptar() {
 		aceptar.setVisible(true);
 	}
 
+	/**
+	 * Habilita el botón Aceptar
+	 */
 	public void bloquearAceptar() {
 		aceptar.setVisible(false);
 	}
 
+	/**
+	 * Si el botón que produce el evento es Reiniciar realiza ciertos efectos sobre la vista y llama a reiniciar tablero
+	 * y si es Aceptar desbloquea el tablero y oculta los botones de elección de juego 
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		JButton btn = (JButton) ev.getSource();
 		
@@ -125,9 +145,12 @@ public class Vista extends JFrame implements ActionListener, ItemListener {
 			bloquearAceptar();
 			bloquearTipoJuego();
 		}
-		
 	}
 
+	/**
+	 * Controla los eventos que se producirán al seleccionar los botones de selección de tipo de juego, 
+	 * estableciendo true para HvsO o false para HvsH
+	 */
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (humanoVsOrdenador.isSelected() && humanoVsHumano.isSelected()) {
@@ -135,16 +158,15 @@ public class Vista extends JFrame implements ActionListener, ItemListener {
 			bloquearAceptar();
 		} else if (humanoVsOrdenador.isSelected()) {
 			tablero.setTipoJuego(true);
-			mensaje.setText("Tipo de juego: HO");
+			mensaje.setText("Tipo de juego: HvsO");
 			desbloquearAceptar();
 		} else if (humanoVsHumano.isSelected()) {
 			tablero.setTipoJuego(false);
-			mensaje.setText("Tipo de juego: HH");
+			mensaje.setText("Tipo de juego: HvsH");
 			desbloquearAceptar();
 		} else {
 			mensaje.setText("Elige modo de juego");
 			bloquearAceptar();
 		}
-
 	}
 }

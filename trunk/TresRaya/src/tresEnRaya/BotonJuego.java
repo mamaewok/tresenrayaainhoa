@@ -1,9 +1,10 @@
 package tresEnRaya;
 
 import javax.swing.JButton;
+
 /**
- * 
- * @author Ainhoa Suárez Sánchez
+ * Implementa las coordenadas que van a tener cada botón que ponemos en el tablero para su posterior comprobación
+ * @author MAMAEWOK
  *
  */
 public class BotonJuego extends JButton {
@@ -12,14 +13,17 @@ public class BotonJuego extends JButton {
 	private int y; // coordenadas del boton en vwrtical
 	private int x; // coordenadas del boton en horizontal
 	
-	
+	/**
+	 * Crea las coordenadas de cada botón al instanciarse
+	 * @param y
+	 * @param x
+	 */
 	public BotonJuego(int y, int x) {
-		super();
 		this.y = y;
 		this.x = x;
 	}
 
-	// returns
+	// returns las coordenadas
 	public int getCoordenadaY() {
 		return y;
 	}
