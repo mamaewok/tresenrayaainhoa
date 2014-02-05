@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 public class Vista extends JFrame implements ActionListener, ItemListener {
 
 	private static final long serialVersionUID = 1L;
-	// Atributos
+	// Atributos de la vista
 	private PanelJuego tablero;
 	private JButton reiniciar, aceptar;
 	private JLabel mensaje;
