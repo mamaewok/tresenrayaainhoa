@@ -17,7 +17,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
-
+/**
+ * 
+ * @author MAMAEWOK
+ *
+ */
 public class Vista extends JFrame implements ActionListener, ItemListener {
 
 	private static final long serialVersionUID = 1L;
